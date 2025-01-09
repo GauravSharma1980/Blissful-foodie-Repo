@@ -1,5 +1,6 @@
 package com.blissful.foodie.dto;
 
+import com.blissful.foodie.annotation.ValidCustomField;
 import com.blissful.foodie.entity.Restaurant;
 import com.blissful.foodie.entity.Role;
 import jakarta.persistence.*;
@@ -19,7 +20,7 @@ public class UserDTO {
     @Id
     private String id;
     @NotNull
-    @Size(max = 50, message = "can't be more then 5 characters")
+    @Size(max = 5, message = "can't be more then 5 characters")
     private String name;
     @Email
     private String email;
@@ -39,4 +40,7 @@ public class UserDTO {
     public UserDTO() {
         name = null;
     }
+
+    @ValidCustomField
+    private String gender;
 }

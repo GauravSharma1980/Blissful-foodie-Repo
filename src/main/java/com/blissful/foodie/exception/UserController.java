@@ -18,15 +18,15 @@ import java.util.stream.Collectors;
 public class UserController {
 
     @PostMapping
-    public ResponseEntity<Object> createUser(@Valid @RequestBody UserDTO userDTO, BindingResult bindingResult) {
+    public ResponseEntity<Object> createUser(@Valid @RequestBody UserDTO userDTO) {
         System.out.println("from createUser...............");
-        if (bindingResult.hasErrors()) {
+        /*if (bindingResult.hasErrors()) {
             List<String> errors = bindingResult.getFieldErrors()
                                                 .stream()
                                                 .map(error -> error.getField() + ": " + error.getDefaultMessage())
                                                 .collect(Collectors.toList());
             return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
-        }
+        }*/
         // Proceed with user creation logic
         return new ResponseEntity<>("User created successfully", HttpStatus.OK);
     }

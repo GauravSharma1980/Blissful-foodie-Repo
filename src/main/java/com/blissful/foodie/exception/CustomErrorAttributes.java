@@ -1,15 +1,10 @@
 package com.blissful.foodie.exception;
 
-import org.springframework.boot.web.error.ErrorAttributeOptions;
 import org.springframework.boot.web.servlet.error.DefaultErrorAttributes;
 import org.springframework.stereotype.Component;
-import org.springframework.web.context.request.WebRequest;
-
-import java.time.LocalDate;
-import java.util.Map;
 
 @Component
-public class CustomErrorAttributes extends DefaultErrorAttributes {
+public class CustomErrorAttributes extends DefaultErrorAttributes {/*
 
 
     @Override
@@ -29,5 +24,6 @@ public class CustomErrorAttributes extends DefaultErrorAttributes {
         errorAttributes.remove("path");
 
         return errorAttributes;
-    }
+ }
+}*/
 }

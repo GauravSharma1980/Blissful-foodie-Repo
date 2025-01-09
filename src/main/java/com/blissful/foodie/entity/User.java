@@ -1,6 +1,7 @@
 package com.blissful.foodie.entity;
 
 
+import com.blissful.foodie.annotation.ValidCustomField;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
@@ -40,6 +41,10 @@ public class User {
 
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL,orphanRemoval = true,fetch = FetchType.EAGER)
     private List<Restaurant> restaurantList = new ArrayList<>();
+
+    @ValidCustomField
+    private String gender;
+
 
 
 
