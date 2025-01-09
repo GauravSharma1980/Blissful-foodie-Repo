@@ -1,29 +1,24 @@
-package com.blissful.foodie.entity;
+package com.blissful.foodie.dto;
 
-
+import com.blissful.foodie.entity.Restaurant;
+import com.blissful.foodie.entity.Role;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-@Table(name = "foodie_user")
-@Entity
-@Getter
-@Setter
-public class User {
-
+@Data
+@AllArgsConstructor
+public class UserDTO {
 
     @Id
     private String id;
-    @NotEmpty
+    @NotNull
     @Size(max = 50, message = "can't be more then 5 characters")
     private String name;
     @Email
@@ -41,6 +36,7 @@ public class User {
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL,orphanRemoval = true,fetch = FetchType.EAGER)
     private List<Restaurant> restaurantList = new ArrayList<>();
 
-
-
- }
+    public UserDTO() {
+        name = null;
+    }
+}
