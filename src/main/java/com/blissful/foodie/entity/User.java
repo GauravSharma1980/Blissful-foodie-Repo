@@ -10,7 +10,9 @@ import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.annotation.CreatedDate;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,6 +46,9 @@ public class User {
 
     @ValidCustomField
     private String gender;
+
+    @CreatedDate
+    private LocalDate createdDate;
 
 
 

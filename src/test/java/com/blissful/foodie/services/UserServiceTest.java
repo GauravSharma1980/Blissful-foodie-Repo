@@ -1,6 +1,7 @@
 package com.blissful.foodie.services;
 
 
+import com.blissful.foodie.dto.UserDTO;
 import com.blissful.foodie.entity.Restaurant;
 import com.blissful.foodie.entity.Role;
 import com.blissful.foodie.entity.User;
@@ -20,7 +21,7 @@ public class UserServiceTest {
 
     @Autowired
     private UserService userService;
-    User user = new User();
+    UserDTO user = new UserDTO();
     List<Restaurant> restaurantList = new ArrayList<>();
 
 
@@ -60,7 +61,7 @@ public class UserServiceTest {
 
     @Test
     public void testGetUser(){
-        User outUser = userService.getUser("1210ead4-8b6c-4a25-8576-6dec070d33f2");
+        UserDTO outUser = userService.getUser("1210ead4-8b6c-4a25-8576-6dec070d33f2");
         outUser.getRestaurantList().forEach(restaurant -> System.out.println(restaurant.getName()));
 
     }

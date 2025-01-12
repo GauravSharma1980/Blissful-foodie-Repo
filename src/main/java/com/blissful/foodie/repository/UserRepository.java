@@ -1,5 +1,6 @@
 package com.blissful.foodie.repository;
 
+import com.blissful.foodie.dto.UserDTO;
 import com.blissful.foodie.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
