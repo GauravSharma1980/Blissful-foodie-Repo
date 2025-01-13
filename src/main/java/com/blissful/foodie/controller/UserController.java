@@ -1,4 +1,4 @@
-package com.blissful.foodie.exception;
+package com.blissful.foodie.controller;
 
 import com.blissful.foodie.dto.UserDTO;
 import com.blissful.foodie.service.UserService;
@@ -53,7 +53,7 @@ public class UserController {
     }
 
     @GetMapping("/list-paging")
-    public ResponseEntity<Page<UserDTO>> getUsersUsingPagination(
+    public ResponseEntity<Page<UserDTO>> getUsers(
             @RequestParam(value = "page", required = false,defaultValue = "0") int page,
             @RequestParam(value = "size", required = false,defaultValue = "10") int size,
             @RequestParam(value = "sortBy",required = false,defaultValue = "createdDate")String sortBy,

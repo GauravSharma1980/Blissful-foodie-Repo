@@ -1,34 +1,30 @@
-package com.blissful.foodie.entity;
+package com.blissful.foodie.dto;
 
-import jakarta.persistence.*;
+import com.blissful.foodie.entity.User;
+import jakarta.persistence.Id;
+import jakarta.persistence.Lob;
+import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
 import java.time.LocalTime;
 
 @Data
-@Entity
-@Table(name="foodie_restaurant")
-public class Restaurant {
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class RestaurantDTO {
 
-    @Id
     private String id;
     private String name;
     private  String address;
     private LocalTime openTime;
     private LocalTime closeTime;
     private boolean isOpen;
-    @ManyToOne
-    private User user;
     private String imagePath;
     private String imageName;
     private String banner;
-    @Lob
     private String description;
-    private LocalDate createdDate;
-
-
-
 }
