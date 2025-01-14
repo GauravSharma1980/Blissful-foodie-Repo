@@ -13,8 +13,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
 
 @Service
 public class RestaurantServiceImpl implements RestaurantService {
@@ -38,7 +36,7 @@ public class RestaurantServiceImpl implements RestaurantService {
 
         Restaurant restaurant = modelMapper.map(restaurantDTO, Restaurant.class);
         restaurantRepository.save(restaurant);
-        return modelMapper.map(restaurant,RestaurantDTO.class);
+        return modelMapper.map(restaurant, RestaurantDTO.class);
     }
 
     @Override
@@ -49,19 +47,18 @@ public class RestaurantServiceImpl implements RestaurantService {
     }
 
 
-
     @Override
     public Page<RestaurantDTO> getRestaurants(Pageable pageable) {
         Page<Restaurant> page = restaurantRepository.findAll(pageable);
-        return page.map(restaurant -> modelMapper.map(restaurant,RestaurantDTO.class));
+        return page.map(restaurant -> modelMapper.map(restaurant, RestaurantDTO.class));
 
     }
 
     @Override
-    public RestaurantDTO updateRestaurant(String restaurantId,RestaurantDTO restaurantDTO) {
+    public RestaurantDTO updateRestaurant(String restaurantId, RestaurantDTO restaurantDTO) {
         Restaurant restaurant = restaurantRepository.findById(restaurantId).orElseThrow(() -> new RuntimeException("invalid restaurantId"));
-        BeanUtils.copyProperties(restaurantDTO,restaurant);
-        return modelMapper.map(restaurantRepository.save(restaurant),RestaurantDTO.class);
+        BeanUtils.copyProperties(restaurantDTO, restaurant);
+        return modelMapper.map(restaurantRepository.save(restaurant), RestaurantDTO.class);
     }
 
     @Override
@@ -74,12 +71,13 @@ public class RestaurantServiceImpl implements RestaurantService {
     public List<RestaurantDTO> searchByName(String keyword) {
         return restaurantRepository.findByNameContainingIgnoreCase(keyword)
                 .stream()
-                .map(restaurant -> modelMapper.map(restaurant,RestaurantDTO.class)).toList();
+                .map(restaurant -> modelMapper.map(restaurant, RestaurantDTO.class)).toList();
     }
 
     @Override
     public Page<RestaurantDTO> getOpenRestaurants(Pageable pageable) {
-        return null;
+        Page<Restaurant> pageRestaurant = restaurantRepository.findByOpen(true, pageable);
+        return pageRestaurant.map(restaurant -> modelMapper.map(restaurant, RestaurantDTO.class));
     }
 
     @Override
@@ -89,13 +87,13 @@ public class RestaurantServiceImpl implements RestaurantService {
         //converting all Restaurant list to RestaurantDto
         return restaurantList
                 .stream()
-                .map(restaurant -> modelMapper.map(restaurant,RestaurantDTO.class))
+                .map(restaurant -> modelMapper.map(restaurant, RestaurantDTO.class))
                 .toList();
     }
 
     @Override
     public Page<RestaurantDTO> getAllRestaurants(Pageable pageable) {
         Page<Restaurant> allPages = restaurantRepository.findAll(pageable);
-        return allPages.map(restaurant -> modelMapper.map(restaurant,RestaurantDTO.class));
+        return allPages.map(restaurant -> modelMapper.map(restaurant, RestaurantDTO.class));
     }
 }
