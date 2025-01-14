@@ -1,6 +1,7 @@
 package com.blissful.foodie.exception;
 
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.NonUniqueResultException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -46,8 +47,7 @@ public class GlobalExceptionHandler {
         @ExceptionHandler(NoSuchElementException.class )
         public ResponseEntity<ErrorResponse> handleNoSuchElementException(NoSuchElementException noSuchElementException){
             log.info("from handleNoSuchElementException...........");
-            Map<String,String> errorMap = new HashMap<>();
-            
+
             //ErrorResponse errorResponse = new ErrorResponse();
             //errorResponse.setMessage("invalid value");
 
@@ -55,5 +55,14 @@ public class GlobalExceptionHandler {
             return new ResponseEntity<>(ErrorResponse.builder()
                     .message("invalid input").timestamp(LocalTime.now()).build(),
                     HttpStatus.BAD_REQUEST);
+        }
+
+        @ExceptionHandler(NonUniqueResultException.class)
+        public ResponseEntity<ErrorResponse> handleNonUniqueResultException(NonUniqueResultException ex){
+            log.info("from handleNonUniqueResultException...........");
+            return new ResponseEntity<>(ErrorResponse.builder()
+                    .message("restaurant name already exists in db").timestamp(LocalTime.now()).build(),
+                    HttpStatus.BAD_REQUEST);
+
         }
     }

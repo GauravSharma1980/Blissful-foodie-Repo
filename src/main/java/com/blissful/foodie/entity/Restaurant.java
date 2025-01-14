@@ -1,16 +1,16 @@
 package com.blissful.foodie.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 @Data
 @Entity
-@Table(name="foodie_restaurant")
+@Table(name="foodie_restaurant",uniqueConstraints =
+        { @UniqueConstraint(columnNames = {"name"})})
 public class Restaurant {
 
     @Id
@@ -27,7 +27,7 @@ public class Restaurant {
     private String banner;
     @Lob
     private String description;
-    private LocalDate createdDate;
+    private LocalDateTime createdDate;
 
 
 

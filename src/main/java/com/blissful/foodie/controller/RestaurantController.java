@@ -3,6 +3,7 @@ package com.blissful.foodie.controller;
 
 import com.blissful.foodie.dto.RestaurantDTO;
 import com.blissful.foodie.service.RestaurantService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -15,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/restaurants")
+@RequestMapping("/api/v1/restaurants")
 public class RestaurantController {
 
     @Autowired
@@ -41,4 +42,11 @@ public class RestaurantController {
         return ResponseEntity.ok(restaurantService.getAllRestaurants(pageable));
     }
 
+    @PutMapping("/{restaurantId}")
+    public ResponseEntity<RestaurantDTO> update(
+            @RequestBody RestaurantDTO restaurantDTO,
+            @PathVariable String restaurantId
+    ){
+        return  ResponseEntity.status(HttpStatus.OK).body(restaurantService.updateRestaurant(restaurantId,restaurantDTO));
+    }
 }

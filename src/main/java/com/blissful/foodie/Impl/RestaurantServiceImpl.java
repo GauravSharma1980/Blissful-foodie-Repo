@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class RestaurantServiceImpl implements RestaurantService {
@@ -35,7 +36,12 @@ public class RestaurantServiceImpl implements RestaurantService {
         return restaurantDTO;*/
 
         Restaurant restaurant = modelMapper.map(restaurantDTO, Restaurant.class);
-        restaurantRepository.save(restaurant);
+        Optional<Restaurant> restaurantOptional = restaurantRepository.findByName(restaurantDTO.getName());
+        if(!restaurantOptional.isPresent()) {
+            restaurantRepository.save(restaurant);
+        }else{
+         throw new RuntimeException("restaurant name already exists in db!!");
+        }
         return modelMapper.map(restaurant, RestaurantDTO.class);
     }
 
