@@ -33,6 +33,6 @@ public class FileServiceImpl implements FileService {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        return new FileData(file.getName(), path);
+        return new FileData(file.getOriginalFilename(), path);
     }
 }

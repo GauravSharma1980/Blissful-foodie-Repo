@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -116,8 +117,15 @@ public class RestaurantServiceImpl implements RestaurantService {
         log.info("upload banner info");
         log.info("restaurantId::{}",restaurantId);
         log.info("contentType:: {},fileName:: {}",banner.getContentType(),banner.getOriginalFilename());
-        String pathFile = "uploads/restaurant_banners/"+ banner.getOriginalFilename();
-        FileData fileData = fileService.uploadFile(banner, pathFile);
+        String pathFile = "uploads/restaurant_banners/";
+        //we have to associate the banner with the restaurantId in db
+        Restaurant restaurant = restaurantRepository.findById(restaurantId).orElseThrow(() -> new RuntimeException("invalid restaurantId"));
+        String fileName = banner.getOriginalFilename();
+        String fileExtention = fileName.substring(fileName.lastIndexOf("."));
+        String newFileName = new Date().getTime() + fileExtention;
+        FileData fileData = fileService.uploadFile(banner, pathFile+newFileName);
+        restaurant.setBanner(newFileName);
+        restaurantRepository.save(restaurant);
         return fileData;
     }
 }
