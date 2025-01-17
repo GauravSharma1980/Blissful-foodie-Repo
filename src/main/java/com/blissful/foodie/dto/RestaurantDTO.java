@@ -31,7 +31,7 @@ public class RestaurantDTO {
     private String imagePath;
     private String imageName;
 
-    @JsonIgnore
+    //@JsonIgnore
     private String banner;
     private String description;
 

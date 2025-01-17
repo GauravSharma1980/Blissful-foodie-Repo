@@ -1,9 +1,11 @@
 package com.blissful.foodie.controller;
 
 
+import com.blissful.foodie.dto.FileData;
 import com.blissful.foodie.dto.RestaurantDTO;
+import com.blissful.foodie.service.FileService;
 import com.blissful.foodie.service.RestaurantService;
-import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -12,16 +14,20 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.UUID;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/v1/restaurants")
 public class RestaurantController {
 
     @Autowired
-    RestaurantService restaurantService;
+    private RestaurantService restaurantService;
 
+    @Autowired
+    private FileService fileService;
 
     @PostMapping("/add")
     public ResponseEntity<RestaurantDTO> addRestaurant(@RequestBody RestaurantDTO restaurantDTO){
@@ -49,4 +55,20 @@ public class RestaurantController {
     ){
         return  ResponseEntity.status(HttpStatus.OK).body(restaurantService.updateRestaurant(restaurantId,restaurantDTO));
     }
+
+
+    @PostMapping("/upload-banner/{restaurantId}")
+    public ResponseEntity<?> uploadFile(@RequestParam("banner")MultipartFile banner,
+                                        @PathVariable String restaurantId){
+
+        log.info("upload banner info");
+        log.info("restaurantId::{}",restaurantId);
+        log.info("contentType:: {},fileName:: {}",banner.getContentType(),banner.getOriginalFilename());
+
+        String pathFile = "uploads/restaurant_banners/"+ banner.getOriginalFilename();
+        FileData fileData = fileService.uploadFile(banner, pathFile);
+
+        return ResponseEntity.status(HttpStatus.OK).body(fileData);
+    }
+
 }
