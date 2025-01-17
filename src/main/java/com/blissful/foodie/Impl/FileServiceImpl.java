@@ -1,6 +1,7 @@
 package com.blissful.foodie.Impl;
 
 import com.blissful.foodie.dto.FileData;
+import com.blissful.foodie.exception.InvalidFilePathException;
 import com.blissful.foodie.service.FileService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -19,7 +20,7 @@ public class FileServiceImpl implements FileService {
     @Override
     public FileData uploadFile(MultipartFile file, String path) {
         if (null == path || path.isEmpty()) {
-            throw new RuntimeException("invalid path value!!");
+            throw new InvalidFilePathException("invalid path value!!");
         }
         Path directory = Paths.get(path.substring(0, path.lastIndexOf("/") + 1));
         log.info("path got {}", directory);

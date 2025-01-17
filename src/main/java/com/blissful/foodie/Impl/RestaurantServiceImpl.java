@@ -1,21 +1,26 @@
 package com.blissful.foodie.Impl;
 
+import com.blissful.foodie.dto.FileData;
 import com.blissful.foodie.dto.RestaurantDTO;
 import com.blissful.foodie.entity.Restaurant;
 import com.blissful.foodie.repository.RestaurantRepository;
+import com.blissful.foodie.service.FileService;
 import com.blissful.foodie.service.RestaurantService;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@Slf4j
 public class RestaurantServiceImpl implements RestaurantService {
 
     @Autowired
@@ -23,6 +28,9 @@ public class RestaurantServiceImpl implements RestaurantService {
 
     @Autowired
     private ModelMapper modelMapper;
+
+    @Autowired
+    private FileService fileService;
 
 
     @Override
@@ -101,5 +109,15 @@ public class RestaurantServiceImpl implements RestaurantService {
     public Page<RestaurantDTO> getAllRestaurants(Pageable pageable) {
         Page<Restaurant> allPages = restaurantRepository.findAll(pageable);
         return allPages.map(restaurant -> modelMapper.map(restaurant, RestaurantDTO.class));
+    }
+
+    @Override
+    public FileData uploadBanner(MultipartFile banner, String restaurantId) {
+        log.info("upload banner info");
+        log.info("restaurantId::{}",restaurantId);
+        log.info("contentType:: {},fileName:: {}",banner.getContentType(),banner.getOriginalFilename());
+        String pathFile = "uploads/restaurant_banners/"+ banner.getOriginalFilename();
+        FileData fileData = fileService.uploadFile(banner, pathFile);
+        return fileData;
     }
 }

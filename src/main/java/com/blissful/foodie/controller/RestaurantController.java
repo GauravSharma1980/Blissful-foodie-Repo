@@ -3,6 +3,8 @@ package com.blissful.foodie.controller;
 
 import com.blissful.foodie.dto.FileData;
 import com.blissful.foodie.dto.RestaurantDTO;
+import com.blissful.foodie.entity.Restaurant;
+import com.blissful.foodie.repository.RestaurantRepository;
 import com.blissful.foodie.service.FileService;
 import com.blissful.foodie.service.RestaurantService;
 import lombok.extern.slf4j.Slf4j;
@@ -28,6 +30,9 @@ public class RestaurantController {
 
     @Autowired
     private FileService fileService;
+
+    @Autowired
+    private RestaurantRepository restaurantRepository;
 
     @PostMapping("/add")
     public ResponseEntity<RestaurantDTO> addRestaurant(@RequestBody RestaurantDTO restaurantDTO){
@@ -58,17 +63,9 @@ public class RestaurantController {
 
 
     @PostMapping("/upload-banner/{restaurantId}")
-    public ResponseEntity<?> uploadFile(@RequestParam("banner")MultipartFile banner,
+    public ResponseEntity<?> uploadBanner(@RequestParam("banner")MultipartFile banner,
                                         @PathVariable String restaurantId){
-
-        log.info("upload banner info");
-        log.info("restaurantId::{}",restaurantId);
-        log.info("contentType:: {},fileName:: {}",banner.getContentType(),banner.getOriginalFilename());
-
-        String pathFile = "uploads/restaurant_banners/"+ banner.getOriginalFilename();
-        FileData fileData = fileService.uploadFile(banner, pathFile);
-
+        FileData fileData = restaurantService.uploadBanner(banner, restaurantId);
         return ResponseEntity.status(HttpStatus.OK).body(fileData);
     }
-
 }

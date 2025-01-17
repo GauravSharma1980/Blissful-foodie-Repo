@@ -1,8 +1,10 @@
 package com.blissful.foodie.service;
 
+import com.blissful.foodie.dto.FileData;
 import com.blissful.foodie.dto.RestaurantDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -35,4 +37,5 @@ public interface RestaurantService {
 
     Page<RestaurantDTO> getAllRestaurants(Pageable pageable);
 
+    FileData uploadBanner(MultipartFile banner, String restaurantId);
 }
