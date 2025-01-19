@@ -9,15 +9,23 @@ import com.blissful.foodie.service.FileService;
 import com.blissful.foodie.service.RestaurantService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.net.MalformedURLException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.UUID;
 
 @Slf4j
@@ -33,6 +41,9 @@ public class RestaurantController {
 
     @Autowired
     private RestaurantRepository restaurantRepository;
+
+    @Value("${file.upload.path}")
+    String fileUploadPath;
 
     @PostMapping("/add")
     public ResponseEntity<RestaurantDTO> addRestaurant(@RequestBody RestaurantDTO restaurantDTO){
@@ -67,5 +78,25 @@ public class RestaurantController {
                                         @PathVariable String restaurantId){
         FileData fileData = restaurantService.uploadBanner(banner, restaurantId);
         return ResponseEntity.status(HttpStatus.OK).body(fileData);
+    }
+
+    @GetMapping("/{restaurantId}/banner")
+    public ResponseEntity<Resource> serveFile(@PathVariable String restaurantId){
+        RestaurantDTO restaurantDTO = restaurantService.get(restaurantId);
+        String fullPath =  fileUploadPath  + restaurantDTO.getBanner();
+        try {
+            Path path = Paths.get(fullPath);
+            Resource resource = new UrlResource(path.toUri());
+            if(resource.exists()){
+            return ResponseEntity
+                    .ok()
+                    .contentType(MediaType.IMAGE_PNG)
+                    //.header(HttpHeaders.CONTENT_DISPOSITION,"attachment: filename=\""+restaurantDTO.getBanner()+"\\")
+                    .body(resource);
+            }
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
+        return null;
     }
 }
