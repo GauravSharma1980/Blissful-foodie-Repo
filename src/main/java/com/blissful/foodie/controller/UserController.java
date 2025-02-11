@@ -1,5 +1,6 @@
 package com.blissful.foodie.controller;
 
+import com.blissful.foodie.dto.LoginRequest;
 import com.blissful.foodie.dto.UserDTO;
 import com.blissful.foodie.service.UserService;
 import jakarta.validation.Valid;
@@ -10,6 +11,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -66,4 +69,5 @@ public class UserController {
 
         return new ResponseEntity<>(allUsers,HttpStatus.OK);
     }
+
 }
